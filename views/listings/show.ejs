@@ -32,20 +32,19 @@
     </form>
  </div>
 
- <div class="col-8 offset-3">
-    <br><br>
+ <div class="col-8 offset-3 mb-3">
+    <br><hr/>
     <h4>Leave a Review</h4>
-    <form>
-        <div>
-            <label for="rating">Rating</label>
-            <input type="range" min="1" max="5" id="rating" name="review[rating]">
+    <form action="/listings/<%=data._id%>/reviews" method="POST">
+        <div class="mb-3 mt-3">
+            <label for="rating" class="form-label">Rating</label>
+            <input class="form-range" type="range" min="1" max="5" id="rating" name="review[rating]">
         </div>
-        <div>
-            <label for="comment">Comments</label>
-            <br>
-            <textarea name="review[comment]" id="comment" cols="35" rows="4"></textarea>
+        <div class="mb-3 mt-3">
+            <label for="comment" class="form-label">Comments</label>
+            <textarea name="review[comment]" id="comment" cols="35" rows="4" class="form-control"></textarea>
         </div>
-        <button>Submit</button>
+        <button class="btn btn-outline-dark">Submit</button>
     </form>
  </div>
 
