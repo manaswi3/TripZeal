@@ -8,7 +8,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js")
 const ExpressError = require("./utils/ExpressError.js")
-const { listingSchema } = require("./schema_valid.js")
+const { listingSchema, reviewSchema } = require("./schema_valid.js")
 const Review  = require("./models/review.js");
 
 app.use(express.static(path.join(__dirname,"/public")))
@@ -22,6 +22,19 @@ app.use(methodOverride("_method"));
 
 const validateListing = (req,res,next)=>{
     let {error}=listingSchema.validate(req.body);
+        console.log(error);
+        if(error){
+            // to get exact message from details array
+            let errMsg=error.details.map((el)=>el.message).join(",");
+            throw new ExpressError(400,errMsg);
+        }
+        else{
+            next();
+        }
+};
+
+const validateReview = (req,res,next)=>{
+    let {error}=reviewSchema.validate(req.body);
         console.log(error);
         if(error){
             // to get exact message from details array
@@ -85,9 +98,18 @@ app.put("/listing/:id",validateListing, wrapAsync(async (req,res)=>{
 //Show Route
 app.get("/listing/:id",wrapAsync(async(req,res)=>{
     let {id}=req.params;
-    const data = await Listing.findById(id);
-    res.render("listings/show.ejs",{data})
+    const data = await Listing.findById(id).populate("reviews");
+    console.log(data.reviews);
+    res.render("listings/show.ejs",{data});
 }))
+
+//One-time database cleanup command
+app.get("/cleanup", async (req,res)=>{
+    await Review.deleteMany({});
+    await Listing.updateMany({}, { $set: { reviews: [] } });
+
+    res.send("Database cleaned!");
+});
 
 //Delete Route
 app.delete("/listing/:id",wrapAsync(async(req,res)=>{
@@ -99,17 +121,18 @@ app.delete("/listing/:id",wrapAsync(async(req,res)=>{
 
 //Reviews
 //Post Request
-app.post("/listings/:id/reviews",async(req,res)=>{
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
     let list = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
 
-    list.reviews.push(newReview);
+    list.reviews.push(newReview._id);
 
     await newReview.save();
     await list.save();
 
     res.redirect(`/listing/${list._id}`);
-});
+}));
+
 
 
 
