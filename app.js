@@ -11,6 +11,9 @@ const ExpressError = require("./utils/ExpressError.js")
 const { listingSchema, reviewSchema } = require("./schema_valid.js")
 const Review  = require("./models/review.js");
 
+const listings = require("./routes/listing.js");
+const reviews = require("./routes/review.js");
+
 app.use(express.static(path.join(__dirname,"/public")))
 
 
@@ -20,31 +23,9 @@ app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(methodOverride("_method"));
 
-const validateListing = (req,res,next)=>{
-    let {error}=listingSchema.validate(req.body);
-        console.log(error);
-        if(error){
-            // to get exact message from details array
-            let errMsg=error.details.map((el)=>el.message).join(",");
-            throw new ExpressError(400,errMsg);
-        }
-        else{
-            next();
-        }
-};
 
-const validateReview = (req,res,next)=>{
-    let {error}=reviewSchema.validate(req.body);
-        console.log(error);
-        if(error){
-            // to get exact message from details array
-            let errMsg=error.details.map((el)=>el.message).join(",");
-            throw new ExpressError(400,errMsg);
-        }
-        else{
-            next();
-        }
-};
+
+
 
 main().then(()=>{
     console.log("connect to DB");
@@ -58,107 +39,13 @@ app.get("/",(req,res)=>{
     res.send("Hey, I am root")
 })
 
-//Index Route
-app.get("/listings",wrapAsync(async(req,res)=>{
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs",{allListings})
-}));
-
-//Create Route
-app.get("/listing/new",(req,res)=>{
-    res.render("listings/new.ejs");
-})
-
-app.post("/listings",validateListing, wrapAsync(async (req,res,next)=>{
-    // if valid listing is not sent
-    // if(!req.body.listing){
-    //     throw new ExpressError(400,"Send valid data for listing");
-    // }
-    
-    const newList = new Listing (req.body.listing);
-    await newList.save();
-    res.redirect("/listings");
-    
-}))
-
-//update Route
-app.get("/listing/:id/edit",wrapAsync(async(req,res) =>{
-    let {id}=req.params;
-    const data = await Listing.findById(id);
-    res.render("listings/edit.ejs",{data})
-}))
-
-app.put("/listing/:id",validateListing, wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    //tod ke saare feilds me updated value daal di
-    await Listing.findByIdAndUpdate(id,{...req.body.listing});
-    res.redirect(`/listing/${id}`);
-}))
-
-//Show Route
-app.get("/listing/:id",wrapAsync(async(req,res)=>{
-    let {id}=req.params;
-    const data = await Listing.findById(id).populate("reviews");
-    console.log(data.reviews);
-    res.render("listings/show.ejs",{data});
-}))
-
-//One-time database cleanup command
-app.get("/cleanup", async (req,res)=>{
-    await Review.deleteMany({});
-    await Listing.updateMany({}, { $set: { reviews: [] } });
-
-    res.send("Database cleaned!");
-});
-
-//Delete Route
-app.delete("/listing/:id",wrapAsync(async(req,res)=>{
-    let { id } = req.params;
-    let deletedListing = await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    res.redirect("/listings");
-}))
-
-//Reviews
-//Post Request
-app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
-    let list = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.review);
-
-    list.reviews.push(newReview._id);
-
-    await newReview.save();
-    await list.save();
-
-    res.redirect(`/listing/${list._id}`);
-}));
-
-//DELETE Review Route
-app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
-    let {id,reviewId} = req.params;
-
-    await Listing.findByIdAndUpdate(id,{$pull: {reviews:reviewId}});
-    await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/listing/${id}`);
-}));
+//All Listings Route----->>
+app.use("/listings",listings);
 
 
+//All Reviews Route----->>
+app.use("/listings/:id/reviews",reviews);
 
-
-// app.get("/testListing",async(req,res)=>{
-//     let sample= new Listing({
-//         title:"My New Villa",
-//         description:"By the beach",
-//         price:1200,
-//         location:"Calangute, Goa",
-//         country:"India",
-//     });
-
-//     await sample.save();
-//     console.log("sample was saved");
-//     res.send("Successfullllll");
-// })
 
 //as per the newer version of express , (*)-->(a wildcard lib) is not valid now
 app.use((req,res,next)=>{
@@ -174,3 +61,11 @@ app.use((err,req,res,next)=>{
 app.listen(8080,()=>{
     console.log("server is listening on port 8080..");
 })
+
+//One-time database cleanup command
+app.get("/cleanup", async (req,res)=>{
+    await Review.deleteMany({});
+    await Listing.updateMany({}, { $set: { reviews: [] } });
+
+    res.send("Database cleaned!");
+});
