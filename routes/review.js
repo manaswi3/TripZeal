@@ -1,4 +1,6 @@
 const express = require("express");
+
+//to link the parameters of parent route to child route (written in app.js)
 const router = express.Router({mergeParams: true});
 const wrapAsync = require("../utils/wrapAsync.js")
 const ExpressError = require("../utils/ExpressError.js")
