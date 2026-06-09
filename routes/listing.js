@@ -55,7 +55,7 @@ router.put("/:id",validateListing, wrapAsync(async (req,res)=>{
     let {id}=req.params;
     //tod ke saare feilds me updated value daal di
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
-    res.redirect(`/listing/${id}`);
+    res.redirect(`/listings/${id}`);
 }))
 
 //Show Route
