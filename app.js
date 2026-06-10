@@ -10,6 +10,16 @@ const ExpressError = require("./utils/ExpressError.js")
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 
+const session = require("express-session");
+
+const sessionOptions = {
+    secret:"mysupersecret",
+    resave: false,
+    saveUninitialized:true,
+};
+
+app.use(session(sessionOptions));
+
 app.use(express.static(path.join(__dirname,"/public")))
 
 
