@@ -10,7 +10,6 @@ const Listing = require("../models/listing.js");
 
 const validateReview = (req,res,next)=>{
     let {error}=reviewSchema.validate(req.body);
-        console.log(error);
         if(error){
             // to get exact message from details array
             let errMsg=error.details.map((el)=>el.message).join(",");
@@ -30,7 +29,7 @@ router.post("/",validateReview,wrapAsync(async(req,res)=>{
 
     await newReview.save();
     await list.save();
-
+    req.flash("success","New Review created!");
     res.redirect(`/listings/${list._id}`);
 }));
 
@@ -41,6 +40,7 @@ router.delete("/:reviewId",wrapAsync(async(req,res)=>{
     await Listing.findByIdAndUpdate(id,{$pull: {reviews:reviewId}});
     await Review.findByIdAndDelete(reviewId);
 
+    req.flash("success","Review deleted!");
     res.redirect(`/listings/${id}`);
 }));
 
