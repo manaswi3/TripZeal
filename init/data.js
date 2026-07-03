@@ -346,6 +346,7 @@ const sampleListings = [
     price: 1800,
     location: "Costa Rica",
     country: "Costa Rica",
+    owner:'6a36d78c6f2e1fe3768d78e5',
   },
 ];
 
