@@ -29,12 +29,10 @@ const listingSchema = new Schema({
         }
     ],
 
-    owner : [
-        {
+    owner : {
             type: Schema.Types.ObjectId,
             ref:"User"
-        }
-    ]
+        },
 });
 
 //Middleware for the case
