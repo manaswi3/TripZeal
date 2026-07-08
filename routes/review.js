@@ -7,18 +7,8 @@ const ExpressError = require("../utils/ExpressError.js")
 const { reviewSchema } = require("../schema_valid.js")
 const Review  = require("../models/review.js");
 const Listing = require("../models/listing.js");
+const {validateReview} = require("../middleware.js")
 
-const validateReview = (req,res,next)=>{
-    let {error}=reviewSchema.validate(req.body);
-        if(error){
-            // to get exact message from details array
-            let errMsg=error.details.map((el)=>el.message).join(",");
-            throw new ExpressError(400,errMsg);
-        }
-        else{
-            next();
-        }
-};
 
 //Post Request
 router.post("/",validateReview,wrapAsync(async(req,res)=>{
