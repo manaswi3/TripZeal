@@ -63,9 +63,11 @@
                 <h5 class="card-title">@<%=rev.author.username%></h5>
                 <p class="card-text"><%= rev.comment %></p>
                 <p class="card-text"><%= rev.rating %> stars</p>
+                <% if(currUser && rev.author._id.equals(currUser._id)) {%>
                 <form class="mb-3" action="/listings/<%=data._id%>/reviews/<%=rev._id%>?_method=DELETE" method="POST">
                     <button class="btn btn-sm btn-dark">Delete</button>
                 </form>
+                <% } %>
             </div>    
         </div>
     <%}%>
