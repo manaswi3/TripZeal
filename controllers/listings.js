@@ -24,9 +24,13 @@ module.exports.createListing = async (req,res,next)=>{
     // if(!req.body.listing){
     //     throw new ExpressError(400,"Send valid data for listing");
     // }
+    let url = req.file.path;
+    let filename = req.file.filename;
+    console.log(url,"..",filename);
     
     const newList = new Listing (req.body.listing);
     newList.owner = req.user._id;//  stores id of current user..
+    newList.image = {url, filename};
     await newList.save();
     req.flash("success","New Listing created!");
     res.redirect("/listings");
