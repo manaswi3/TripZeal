@@ -40,6 +40,7 @@
  <div class="col-8 offset-3 mb-3">
     <br>
     <% if(currUser) {%>
+    <hr/>
     <h4>Leave a Review</h4>
     <form action="/listings/<%=data._id%>/reviews" method="POST" class="needs-validation" novalidate>
         <div class="mb-3 mt-3">
@@ -70,9 +71,13 @@
     </form>
     
     <% } %>
+    
+    
+    <% if(data.reviews.length>0){ %>
     <hr/>
-    <p><b>All Reviews</b></p>
     <div class="row">
+    
+    <p><b>All Reviews</b></p>
     <%for(rev of data.reviews) {%>
         <div class="card col-5 ms-3 mb-3">
             <div class="card-body">
@@ -87,11 +92,37 @@
             </div>    
         </div>
     <%}%>
-    </div>
-    
+    </div> 
+    <% } %>
  </div>
 
- 
+ <div class="col-8 offset-3 mb-3">
+    <h3>Where you'll be</h3>
+    <div id="map" style="height: 400px; width: 80%;border-radius: 10px;margin: 5px;"></div>
+ </div>
+<script type="module">
+import * as maplibregl from "https://unpkg.com/maplibre-gl@6.2.0/dist/maplibre-gl.mjs";
 
+const coordinates = [-118.6919, 34.0259]; // Malibu
+
+const map = new maplibregl.Map({
+    container: "map",
+    style: "https://tiles.openfreemap.org/styles/bright",
+    center: coordinates,
+    zoom: 14,
+});
+
+const popup = new maplibregl.Popup({ offset: 25 }).setHTML(`
+    <h6>Cozy Beachfront Cottage</h6>
+    <p>Malibu, United States</p>
+`);
+
+new maplibregl.Marker()
+    .setLngLat(coordinates)
+    .setPopup(popup)
+    .addTo(map);
+
+map.addControl(new maplibregl.NavigationControl());
+</script>
 </div>
 
