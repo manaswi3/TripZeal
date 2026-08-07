@@ -1,4 +1,7 @@
 <% layout("/layouts/boilerplate") -%>
+<script>
+    const cc = "<%=data.location%>,<%=data.country%>";
+</script>
 <div class="row mt-3">
     <div class="col-8 offset-3">
     <h3><%=data.title%></h3>
@@ -100,29 +103,6 @@
     <h3>Where you'll be</h3>
     <div id="map" style="height: 400px; width: 80%;border-radius: 10px;margin: 5px;"></div>
  </div>
-<script type="module">
-import * as maplibregl from "https://unpkg.com/maplibre-gl@6.2.0/dist/maplibre-gl.mjs";
-
-const coordinates = [-118.6919, 34.0259]; // Malibu
-
-const map = new maplibregl.Map({
-    container: "map",
-    style: "https://tiles.openfreemap.org/styles/bright",
-    center: coordinates,
-    zoom: 14,
-});
-
-const popup = new maplibregl.Popup({ offset: 25 }).setHTML(`
-    <h6>Cozy Beachfront Cottage</h6>
-    <p>Malibu, United States</p>
-`);
-
-new maplibregl.Marker()
-    .setLngLat(coordinates)
-    .setPopup(popup)
-    .addTo(map);
-
-map.addControl(new maplibregl.NavigationControl());
-</script>
+<script src ="/js/map.js" type="module"></script>
 </div>
 
