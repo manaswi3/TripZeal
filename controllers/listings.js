@@ -1,4 +1,5 @@
 const Listing = require("../models/listing");
+const geocode = require("../utils/geocode");
 
 module.exports.index = async(req,res)=>{
     const allListings = await Listing.find({});
@@ -27,10 +28,17 @@ module.exports.createListing = async (req,res,next)=>{
     let url = req.file.path;
     let filename = req.file.filename;
     console.log(url,"..",filename);
+
+    //to save the coordinates
+    const coordinates = await geocode(
+        req.body.listing.location,
+        req.body.listing.country
+    );
     
     const newList = new Listing (req.body.listing);
     newList.owner = req.user._id;//  stores id of current user..
     newList.image = {url, filename};
+    newList.coordinates = coordinates;
     await newList.save();
     req.flash("success","New Listing created!");
     res.redirect("/listings");
@@ -51,6 +59,14 @@ module.exports.getEditListing = async(req,res) =>{
 
 module.exports.editListing = async (req,res)=>{
     let {id}=req.params;
+
+    const { location, country } = req.body.listing;
+
+    const list = await Listing.findById(id);
+
+if (location !== list.location || country !== list.country) {
+    req.body.listing.coordinates = await geocode(location, country);
+}
     //tod ke saare feilds me updated value daal di
     let listing = await Listing.findByIdAndUpdate(id,{...req.body.listing});
 
