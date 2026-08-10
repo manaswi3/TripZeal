@@ -73,9 +73,9 @@ async function main(){
     await mongoose.connect(MongoDB_url);
 }
 
-app.get("/",(req,res)=>{
-    res.send("Hey, I am root")
-})
+// app.get("/",(req,res)=>{
+//     res.send("Hey, I am root")
+// })
 
 //All Listings Route----->>
 app.use("/listings",listingRouter);
