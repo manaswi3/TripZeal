@@ -38,7 +38,7 @@ const listingSchema = new Schema({
 
 //Middleware for the case
 //------If a listing got deleted then all reviews must be deletd from the db-------
-listingSchema.post("findByIdandDelete",async(listing)=>{
+listingSchema.post("findOneAndDelete",async(listing)=>{
     if(listing){
         await Review.deleteMany(
             {_id : { $in: listing.reviews }}
