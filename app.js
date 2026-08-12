@@ -22,7 +22,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
 const sessionOptions = {
-    secret:"mysupersecret",
+    secret:`${process.env.SESSION_SECRET_KEY}`,
     resave: false,
     saveUninitialized:true,
     cookie:{
@@ -104,9 +104,9 @@ app.listen(8080,()=>{
 })
 
 //One-time database cleanup command
-app.get("/cleanup", async (req,res)=>{
-    await Review.deleteMany({});
-    await Listing.updateMany({}, { $set: { reviews: [] } });
+// app.get("/cleanup", async (req,res)=>{
+//     await Review.deleteMany({});
+//     await Listing.updateMany({}, { $set: { reviews: [] } });
 
-    res.send("Database cleaned!");
-});
+//     res.send("Database cleaned!");
+// });
