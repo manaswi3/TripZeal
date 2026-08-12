@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+if(process.env.NODE_ENV != "production"){
+    require('dotenv').config();
+}
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MongoDB_url = "mongodb://127.0.0.1:27017/tripzeal";
+const MongoDB_url = `${process.env.MONGO_URL}`;
 
 main().then(()=>{
     console.log("connect to DB");
