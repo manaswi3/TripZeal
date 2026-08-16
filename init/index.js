@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
 if(process.env.NODE_ENV != "production"){
-    require('dotenv').config();
+    const res=require('dotenv').config({ path: "../.env" });
+    console.log(res);
 }
+const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MongoDB_url = `${process.env.MONGO_URL}`;
+const MongoDB_url = process.env.MONGO_URL;
 
-main().then(()=>{
-    console.log("connect to DB");
-}).catch(err=>console.log(err));
+
 
 async function main(){
     await mongoose.connect(MongoDB_url);
+    console.log("connect to DB");
 }
 
 const initDB = async() =>{
@@ -22,4 +22,4 @@ const initDB = async() =>{
     console.log("data was initialized");
 };
 
-initDB();
+main().then(initDB).catch(err=>console.log(err));
