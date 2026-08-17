@@ -40,72 +40,72 @@
         }
     </style>
     <div id="filters">
-        <div class="filter">
+        <div class="filter" data-category="trending">
             <div><i class="fa-solid fa-fire"></i></div>
             <p>Trending</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="rooms">
             <div><i class="fa-solid fa-bed"></i></div>
             <p>Rooms</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="iconic_cities">
             <div><i class="fa-solid fa-mountain-city"></i></div>
             <p>Iconic Cities</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="mountains">
             <div><i class="fa-solid fa-mountain"></i></div>
             <p>Mountains</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="castles">
             <div><i class="fa-brands fa-fort-awesome"></i></div>
             <p>Castles</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="beaches">
             <div><i class="fa-solid fa-umbrella-beach"></i></div>
             <p>Beaches</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="arctic">
             <div><i class="fa-regular fa-snowflake"></i></div>
             <p>Arctic</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="pools">
             <div><i class="fa-solid fa-person-swimming"></i></div>
             <p>Pools</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="tropical">
             <div><i class="fa-solid fa-tree"></i></div>
             <p>Tropical</p>
         </div>
 
-        <div class="filter">
+        <div class="filter" data-category="ski">
             <div><i class="fa-solid fa-person-skiing"></i></div>
             <p>Ski</p>
         </div>
 
-        <div class="filter">
+        <div class="filter" data-category="camping">
             <div><i class="fa-solid fa-campground"></i></div>
             <p>Camping</p>
         </div>
 
-        <div class="filter">
+        <div class="filter" data-category="villas">
             <div><i class="fa-solid fa-hotel"></i></div>
             <p>Villas</p>
         </div>
 
-        <div class="filter">
+        <div class="filter" data-category="countryside">
             <div><i class="fa-solid fa-tractor"></i></div>
             <p>Countryside</p>
         </div>
 
-        <div class="filter">
+        <div class="filter" data-category="domes">
             <div><i class="fa-solid fa-landmark-dome"></i></div>
             <p>Domes</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="houseboat">
             <div><i class="fa-solid fa-ship"></i></div>
             <p>Houseboat</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="caves">
             <div><i class="fa-solid fa-dungeon"></i></div>
             <p>Caves</p>
         </div>
@@ -147,5 +147,30 @@
                     info.style.display="none";
                 } 
             }
+        });
+
+        const filters = document.querySelectorAll(".filter");
+
+
+        // highlight active filter on page load
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeCategory = urlParams.get("category");
+        
+        filters.forEach(filter => {
+            // highlight active
+            if(filter.dataset.category === activeCategory){
+                filter.classList.add("active-filter");
+            }
+
+            filter.addEventListener("click", () => {
+                const category = filter.dataset.category;
+                
+                // if already active, clicking again removes filter
+                if(category === activeCategory){
+                    window.location.href = "/listings";
+                } else {
+                    window.location.href = `/listings?category=${category}`;
+                }
+            });
         });
     </script>
