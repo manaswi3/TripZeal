@@ -2,7 +2,10 @@ const Listing = require("../models/listing");
 const geocode = require("../utils/geocode");
 
 module.exports.index = async(req,res)=>{
-    const allListings = await Listing.find({});
+    const {category} = req.query;
+    const cat=category;
+    console.log("cat:", cat);
+    const allListings = cat? await Listing.find({category:cat}):await Listing.find();
     res.render("listings/index.ejs",{allListings})
 }
 
