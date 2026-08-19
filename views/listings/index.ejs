@@ -1,182 +1,621 @@
 <% layout("/layouts/boilerplate") -%>
-    <!-- <h3>All listings</h3> -->
-    <!-- <form method="GET" action="/listing/new">
-        <button>Add new Listing</button>
-    </form> -->
-    <style>
 
-        #filters{
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        .filter{
-            text-align: center;
-            margin-right: 2rem;
-            margin-top: 2rem;
-            opacity: 0.7;
-        }
-        .filter:hover{
-            opacity: 1;
-            cursor: pointer;
-        }
-        .filter p{
-            font-size: 0.8rem;
-        }
+<style>
+  /* ── Base ── */
+  body {
+    background-color: #FDFAF3;
+    font-family: 'Poppins', sans-serif;
+    color: #1a1a1a;
+  }
 
-        .active-filter {
-            opacity: 1;
-            border-bottom: 2px solid black;
-            padding-bottom: 0.3rem;
-        }
+  /* ── Hero Section ── */
+  .hero-section {
+    position: relative;
+    width: 100%;
+    background-color: #FDFAF3;
+    overflow: hidden;
+    padding-top: 0.5rem;
+  }
 
-        .tax-info{
-            display: none;
-        }
+  /* Doodle floating elements */
+  .doodle-star {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    opacity: 0.55;
+  }
+  .doodle-cloud {
+    position: absolute;
+    opacity: 0.45;
+  }
 
-        .tax-toggle{
-            display: flex;
-            align-items: center;
-            border: 1px solid rgb(95, 95, 95);
-            border-radius: 1rem;
-            height: 3.15rem;
-            margin-left: 3rem;
-            padding: 0.5rem 1rem;
-        }
-    </style>
-    <div id="filters">
-        <div class="filter" data-category="trending">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Trending</p>
-        </div>
-        <div class="filter" data-category="rooms">
-            <div><i class="fa-solid fa-bed"></i></div>
-            <p>Rooms</p>
-        </div>
-        <div class="filter" data-category="iconic_cities">
-            <div><i class="fa-solid fa-mountain-city"></i></div>
-            <p>Iconic Cities</p>
-        </div>
-        <div class="filter" data-category="mountains">
-            <div><i class="fa-solid fa-mountain"></i></div>
-            <p>Mountains</p>
-        </div>
-        <div class="filter" data-category="castles">
-            <div><i class="fa-brands fa-fort-awesome"></i></div>
-            <p>Castles</p>
-        </div>
-        <div class="filter" data-category="beaches">
-            <div><i class="fa-solid fa-umbrella-beach"></i></div>
-            <p>Beaches</p>
-        </div>
-        <div class="filter" data-category="arctic">
-            <div><i class="fa-regular fa-snowflake"></i></div>
-            <p>Arctic</p>
-        </div>
-        <div class="filter" data-category="pools">
-            <div><i class="fa-solid fa-person-swimming"></i></div>
-            <p>Pools</p>
-        </div>
-        <div class="filter" data-category="tropical">
-            <div><i class="fa-solid fa-tree"></i></div>
-            <p>Tropical</p>
-        </div>
+  /* Globe image container */
+  .globe-wrap {
+  background-image: url('/assets/tripzeal_banner.png');
+  background-size: cover;
+  background-position: center top;  
+  background-repeat: no-repeat;
+  height: 500px;
+  width: 90%;          
+  margin: 0 auto;      
+  display: block;
+  border-radius: 16px; 
+}
+  .globe-wrap img.globe-img {
+    width: 100%;
+    display: block;
+    object-fit: contain;
+  }
 
-        <div class="filter" data-category="ski">
-            <div><i class="fa-solid fa-person-skiing"></i></div>
-            <p>Ski</p>
-        </div>
+  /* Search bar overlaid on globe */
+  .search-overlay {
+    position: absolute;
+    bottom: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    min-width: 280px;
+    max-width: 540px;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 50px;
+    padding: 0.55rem 0.6rem 0.55rem 1.2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    color: #555;
+    background: transparent;
+  }
+  .search-box button {
+    background: #FFB800;
+    border: none;
+    border-radius: 50px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .search-box button:hover { background: #e6a500; }
+  .search-box button i { color: #fff; font-size: 0.85rem; }
 
-        <div class="filter" data-category="camping">
-            <div><i class="fa-solid fa-campground"></i></div>
-            <p>Camping</p>
-        </div>
+  /* ── Filters / Categories ── */
+  .filters-section {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    padding: 0.6rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  #filters {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    gap: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #filters::-webkit-scrollbar { display: none; }
 
-        <div class="filter" data-category="villas">
-            <div><i class="fa-solid fa-hotel"></i></div>
-            <p>Villas</p>
-        </div>
+  .filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 68px;
+    padding: 0.5rem 0.6rem;
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-align: center;
+    flex-shrink: 0;
+    border-bottom: 2.5px solid transparent;
+    margin-bottom: -1px;
+  }
+  .filter:hover {
+    opacity: 1;
+  }
+  .filter i {
+    font-size: 1.15rem;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .filter p {
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+    color: #333;
+  }
+  .active-filter {
+    opacity: 1;
+    border-bottom: 2.5px solid #1a1a1a;
+  }
 
-        <div class="filter" data-category="countryside">
-            <div><i class="fa-solid fa-tractor"></i></div>
-            <p>Countryside</p>
-        </div>
+  /* Tax toggle */
+  .tax-toggle {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #ccc;
+    border-radius: 2rem;
+    height: 2.8rem;
+    margin-left: auto;
+    padding: 0.4rem 1rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: #fff;
+  }
+  .tax-toggle label {
+    font-size: 0.78rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+  }
+  .form-check-input:checked {
+    background-color: #FFB800;
+    border-color: #FFB800;
+  }
 
-        <div class="filter" data-category="domes">
-            <div><i class="fa-solid fa-landmark-dome"></i></div>
-            <p>Domes</p>
-        </div>
-        <div class="filter" data-category="houseboat">
-            <div><i class="fa-solid fa-ship"></i></div>
-            <p>Houseboat</p>
-        </div>
-        <div class="filter" data-category="caves">
-            <div><i class="fa-solid fa-dungeon"></i></div>
-            <p>Caves</p>
-        </div>
+  /* ── Section Header ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+    padding: 0 0.2rem;
+  }
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .section-title .squiggle {
+    display: inline-block;
+    width: 28px;
+    vertical-align: middle;
+  }
+  .view-all-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #FFB800;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .view-all-link:hover { color: #e6a500; }
 
-        <div class="tax-toggle">
-            <div class="form-check-reverse form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-                <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
-            </div>
-        </div>
+  /* ── Listing Cards ── */
+  .listings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+    padding: 0 0.2rem;
+  }
+  @media (max-width: 900px) {
+    .listings-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 580px) {
+    .listings-grid { grid-template-columns: 1fr; }
+  }
+
+  .listing-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card-listing {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative;
+    width: 100% !important;
+  }
+  .card-listing:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.13);
+  }
+
+  .card-listing .card-img-top {
+    height: 220px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  /* Heart wishlist button */
+  .heart-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.88);
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+    z-index: 2;
+  }
+  .heart-btn:hover { background: #fff; }
+  .heart-btn i { color: #777; font-size: 0.85rem; }
+  .heart-btn:hover i { color: #e74c3c; }
+
+  .card-listing .card-body {
+    padding: 0.9rem 1rem;
+  }
+  .card-listing .listing-title {
+    font-weight: 600;
+    font-size: 0.92rem;
+    margin-bottom: 0.2rem;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-listing .listing-location {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+  .card-listing .listing-price {
+    font-size: 0.85rem;
+    color: #444;
+    margin: 0;
+  }
+  .card-listing .listing-price b {
+    font-size: 1rem;
+    color: #1a1a1a;
+  }
+  .card-listing .listing-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #333;
+    margin-top: 0.3rem;
+  }
+  .card-listing .listing-rating i { color: #FFB800; font-size: 0.75rem; }
+
+  .tax-info { display: none; }
+
+  /* Yellow pill tag on card (optional category) */
+  .card-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #FFB800;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Load more ── */
+  .load-more-wrap {
+    text-align: center;
+    margin: 2.5rem 0 1rem;
+  }
+  .btn-load-more {
+    background: transparent;
+    border: 2px solid #FFB800;
+    color: #1a1a1a;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 0.6rem 2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-load-more:hover {
+    background: #FFB800;
+    color: #fff;
+  }
+
+  /* ── Doodle decorations around listings ── */
+  .listings-wrapper {
+    position: relative;
+    padding: 2rem 1.5rem 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: #aaa;
+  }
+  .empty-state i {
+    font-size: 3rem;
+    color: #FFB800;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .empty-state p {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* Responsive hero search */
+  @media (max-width: 600px) {
+    .search-overlay { width: 80%; bottom: 14%; }
+  }
+  @media (max-width: 400px) {
+    .search-overlay { width: 90%; bottom: 10%; }
+  }
+</style>
+
+<div class="hero-section">
+
+  <!-- Floating doodle stars -->
+  <svg class="doodle-star" style="top:8%;left:4%;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2l2.09 6.26L21 9.27l-5 4.73 1.18 6.9L12 17.77l-5.18 3.13L8 14l-5-4.73 6.91-1.01L12 2z" fill="#FFB800" opacity="0.7"/>
+  </svg>
+  <svg class="doodle-star" style="top:5%;right:6%;width:16px;height:16px;" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2l2.09 6.26L21 9.27l-5 4.73 1.18 6.9L12 17.77l-5.18 3.13L8 14l-5-4.73 6.91-1.01L12 2z" fill="#FFB800" opacity="0.55"/>
+  </svg>
+
+  <!-- Floating clouds (right side) -->
+  <svg class="doodle-cloud" style="top:7%;right:8%;width:70px;" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 30 Q10 30 10 24 Q10 18 16 18 Q16 10 24 10 Q30 10 32 16 Q36 14 40 18 Q46 18 46 24 Q46 30 40 30 Z" stroke="#aaa" stroke-width="1.5" fill="none"/>
+  </svg>
+  <svg class="doodle-cloud" style="top:3%;right:16%;width:48px;" viewBox="0 0 80 40" fill="none">
+    <path d="M15 30 Q10 30 10 24 Q10 18 16 18 Q16 10 24 10 Q30 10 32 16 Q36 14 40 18 Q46 18 46 24 Q46 30 40 30 Z" stroke="#bbb" stroke-width="1.5" fill="none"/>
+  </svg>
+  <!-- Paper plane (left) -->
+  <svg style="position:absolute;top:12%;left:7%;width:48px;opacity:0.5;" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 38 L58 5 L32 35 Z" stroke="#555" stroke-width="1.5" fill="none"/>
+    <path d="M32 35 L28 22 L58 5 Z" stroke="#555" stroke-width="1.5" fill="none"/>
+    <!-- dashed trail -->
+    <path d="M2 38 Q-4 20 8 10" stroke="#888" stroke-width="1" stroke-dasharray="3,4" fill="none"/>
+  </svg>
+
+  <!-- Globe illustration image -->
+  <div class="globe-wrap">
+    <!-- Search bar overlaid on globe -->
+    <!-- <div class="search-overlay">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass" style="color:#aaa;margin-right:8px;"></i>
+        <input type="text" placeholder="Search destinations, places…" id="heroSearch"/>
+        <button onclick="handleHeroSearch()">
+          <i class="fa-solid fa-sliders"></i>
+        </button>
+      </div>
+    </div> -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  STICKY FILTERS / CATEGORY BAR        -->
+<!-- ═══════════════════════════════════════ -->
+<div class="filters-section">
+  <div id="filters">
+    <div class="filter" data-category="trending">
+      <i class="fa-solid fa-fire"></i>
+      <p>Trending</p>
     </div>
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-        <%for(let info of allListings){%>
-        <a href="/listings/<%=info._id%>" class="listing-link">
-        <div class="card col card-listing" style="width: 20rem;">
-            <img src="<%= info.image.url %>" class="card-img-top" alt="listing image" style="height:20rem;"/>
-            <div class="card-img-overlay"></div>
-            <div class="card-body">
-                <p class="card-text">
-                    <b><%=info.title%></b>
-                    <br>&#8377; <%= info.price.toLocaleString("en-IN") %> per night
-                    <i class="tax-info">&nbsp; &nbsp;+18% GST</i>
-                </p>
-            </div>
-        </div>
-        </a>
-        <%}%>
+    <div class="filter" data-category="rooms">
+      <i class="fa-solid fa-bed"></i>
+      <p>Rooms</p>
+    </div>
+    <div class="filter" data-category="iconic_cities">
+      <i class="fa-solid fa-mountain-city"></i>
+      <p>Iconic Cities</p>
+    </div>
+    <div class="filter" data-category="mountains">
+      <i class="fa-solid fa-mountain"></i>
+      <p>Mountains</p>
+    </div>
+    <div class="filter" data-category="castles">
+      <i class="fa-brands fa-fort-awesome"></i>
+      <p>Castles</p>
+    </div>
+    <div class="filter" data-category="beaches">
+      <i class="fa-solid fa-umbrella-beach"></i>
+      <p>Beaches</p>
+    </div>
+    <div class="filter" data-category="arctic">
+      <i class="fa-regular fa-snowflake"></i>
+      <p>Arctic</p>
+    </div>
+    <div class="filter" data-category="pools">
+      <i class="fa-solid fa-person-swimming"></i>
+      <p>Pools</p>
+    </div>
+    <div class="filter" data-category="tropical">
+      <i class="fa-solid fa-tree"></i>
+      <p>Tropical</p>
+    </div>
+    <div class="filter" data-category="ski">
+      <i class="fa-solid fa-person-skiing"></i>
+      <p>Ski</p>
+    </div>
+    <div class="filter" data-category="camping">
+      <i class="fa-solid fa-campground"></i>
+      <p>Camping</p>
+    </div>
+    <div class="filter" data-category="villas">
+      <i class="fa-solid fa-hotel"></i>
+      <p>Villas</p>
+    </div>
+    <div class="filter" data-category="countryside">
+      <i class="fa-solid fa-tractor"></i>
+      <p>Countryside</p>
+    </div>
+    <div class="filter" data-category="domes">
+      <i class="fa-solid fa-landmark-dome"></i>
+      <p>Domes</p>
+    </div>
+    <div class="filter" data-category="houseboat">
+      <i class="fa-solid fa-ship"></i>
+      <p>Houseboat</p>
+    </div>
+    <div class="filter" data-category="caves">
+      <i class="fa-solid fa-dungeon"></i>
+      <p>Caves</p>
     </div>
 
-    <script>
-        let taxSwitch = document.getElementById("switchCheckDefault");
-        taxSwitch.addEventListener("click",()=>{
-            let taxInfo = document.getElementsByClassName("tax-info");
-            for(info of taxInfo){
-                if(info.style.display!="inline"){
-                    info.style.display="inline";
-                }
-                else{
-                    info.style.display="none";
-                } 
-            }
-        });
-
-        const filters = document.querySelectorAll(".filter");
+    <!-- Tax toggle -->
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch d-flex align-items-center gap-2">
+        <input class="form-check-input mt-0" type="checkbox" role="switch" id="switchCheckDefault">
+        <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-        // highlight active filter on page load
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeCategory = urlParams.get("category");
-        
-        filters.forEach(filter => {
-            // highlight active
-            if(filter.dataset.category === activeCategory){
-                filter.classList.add("active-filter");
-            }
+<div class="listings-wrapper">
 
-            filter.addEventListener("click", () => {
-                const category = filter.dataset.category;
-                
-                // if already active, clicking again removes filter
-                if(category === activeCategory){
-                    window.location.href = "/listings";
-                } else {
-                    window.location.href = `/listings?category=${category}`;
-                }
-            });
-        });
-    </script>
+  <div class="section-header">
+    <div class="section-title">
+      Top stays for you
+      <!-- hand-drawn squiggle arrow -->
+      <svg class="squiggle" viewBox="0 0 40 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 10 Q8 4 14 10 Q20 16 26 10 Q32 4 38 10" stroke="#FFB800" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <a href="/listings" class="view-all-link">
+      View all <i class="fa-solid fa-arrow-right" style="font-size:0.75rem;"></i>
+    </a>
+  </div>
+
+  <% if(allListings && allListings.length > 0) { %>
+  <div class="listings-grid">
+    <% for(let info of allListings){ %>
+    <a href="/listings/<%= info._id %>" class="listing-link">
+      <div class="card card-listing">
+        <img
+          src="<%= info.image.url %>"
+          class="card-img-top"
+          alt="<%= info.title %>"
+          loading="lazy"
+        />
+        <button class="heart-btn" onclick="event.preventDefault(); toggleWishlist(this)">
+          <i class="fa-regular fa-heart"></i>
+        </button>
+        <div class="card-body">
+          <div class="listing-title"><%= info.title %></div>
+          <% if(info.location || info.country) { %>
+          <div class="listing-location">
+            <i class="fa-solid fa-location-dot" style="color:#FFB800;font-size:0.7rem;"></i>
+            <%= [info.location, info.country].filter(Boolean).join(', ') %>
+          </div>
+          <% } %>
+          <p class="listing-price mb-0">
+            <b>&#8377; <%= info.price.toLocaleString("en-IN") %></b>
+            &nbsp;/ night
+            <i class="tax-info">&nbsp;+18% GST</i>
+          </p>
+          <% if(info.rating || info.reviews) { %>
+          <div class="listing-rating">
+            <i class="fa-solid fa-star"></i>
+            <%= info.rating || "4.8" %>
+            <% if(info.reviews) { %><span style="color:#aaa;font-weight:400;">(<%= info.reviews %>)</span><% } %>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </a>
+    <% } %>
+  </div>
+
+  <div class="load-more-wrap">
+    <button class="btn-load-more">
+      Load more &nbsp;<i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i>
+    </button>
+  </div>
+
+  <% } else { %>
+  <div class="empty-state">
+    <i class="fa-solid fa-map-location-dot"></i>
+    <p>No listings found for this category.<br>Try another filter!</p>
+  </div>
+  <% } %>
+
+</div>
+
+<script>
+  /* ── Tax toggle ── */
+  const taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    document.querySelectorAll(".tax-info").forEach(el => {
+      el.style.display = el.style.display !== "inline" ? "inline" : "none";
+    });
+  });
+
+  /* ── Category filters ── */
+  const filters = document.querySelectorAll(".filter");
+  const urlParams = new URLSearchParams(window.location.search);
+  const activeCategory = urlParams.get("category");
+
+  filters.forEach(filter => {
+    if (filter.dataset.category === activeCategory) {
+      filter.classList.add("active-filter");
+    }
+    filter.addEventListener("click", () => {
+      const category = filter.dataset.category;
+      window.location.href = category === activeCategory
+        ? "/listings"
+        : `/listings?category=${category}`;
+    });
+  });
+
+  /* ── Hero search ── */
+//   function handleHeroSearch() {
+//     const q = document.getElementById("heroSearch").value.trim();
+//     if (q) window.location.href = `/listings?search=${encodeURIComponent(q)}`;
+//   }
+//   document.getElementById("heroSearch").addEventListener("keydown", e => {
+//     if (e.key === "Enter") handleHeroSearch();
+//   });
+
+  /* ── Wishlist heart toggle (UI only) ── */
+  function toggleWishlist(btn) {
+    const icon = btn.querySelector("i");
+    if (icon.classList.contains("fa-regular")) {
+      icon.classList.replace("fa-regular", "fa-solid");
+      icon.style.color = "#e74c3c";
+    } else {
+      icon.classList.replace("fa-solid", "fa-regular");
+      icon.style.color = "";
+    }
+  }
+</script>
