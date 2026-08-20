@@ -99,7 +99,7 @@
     background: #fff;
     border-bottom: 1px solid #eee;
     padding: 0.6rem 1.5rem;
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -210,7 +210,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.4rem;
-    padding: 0 0.2rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   @media (max-width: 900px) {
     .listings-grid { grid-template-columns: repeat(2, 1fr); }
@@ -231,8 +232,10 @@
     background: #fff;
     box-shadow: 0 2px 12px rgba(0,0,0,0.07);
     transition: transform 0.25s, box-shadow 0.25s;
+    padding: 1rem;
     position: relative;
-    width: 100% !important;
+    /* width: 100% !important; */
+    width: 25vw !important;
   }
   .card-listing:hover {
     transform: translateY(-4px);
@@ -243,30 +246,10 @@
     height: 220px;
     object-fit: cover;
     width: 100%;
+    margin-bottom: 0.75rem;
     border-radius: 0;
   }
 
-  /* Heart wishlist button */
-  .heart-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255,255,255,0.88);
-    border: none;
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(4px);
-    transition: background 0.2s;
-    z-index: 2;
-  }
-  .heart-btn:hover { background: #fff; }
-  .heart-btn i { color: #777; font-size: 0.85rem; }
-  .heart-btn:hover i { color: #e74c3c; }
 
   .card-listing .card-body {
     padding: 0.9rem 1rem;
@@ -347,7 +330,6 @@
     color: #fff;
   }
 
-  /* ── Doodle decorations around listings ── */
   .listings-wrapper {
     position: relative;
     padding: 2rem 1.5rem 2.5rem;
@@ -355,7 +337,6 @@
     margin: 0 auto;
   }
 
-  /* Empty state */
   .empty-state {
     text-align: center;
     padding: 4rem 1rem;
@@ -383,30 +364,6 @@
 
 <div class="hero-section">
 
-  <!-- Floating doodle stars -->
-  <svg class="doodle-star" style="top:8%;left:4%;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2l2.09 6.26L21 9.27l-5 4.73 1.18 6.9L12 17.77l-5.18 3.13L8 14l-5-4.73 6.91-1.01L12 2z" fill="#FFB800" opacity="0.7"/>
-  </svg>
-  <svg class="doodle-star" style="top:5%;right:6%;width:16px;height:16px;" viewBox="0 0 24 24" fill="none">
-    <path d="M12 2l2.09 6.26L21 9.27l-5 4.73 1.18 6.9L12 17.77l-5.18 3.13L8 14l-5-4.73 6.91-1.01L12 2z" fill="#FFB800" opacity="0.55"/>
-  </svg>
-
-  <!-- Floating clouds (right side) -->
-  <svg class="doodle-cloud" style="top:7%;right:8%;width:70px;" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M15 30 Q10 30 10 24 Q10 18 16 18 Q16 10 24 10 Q30 10 32 16 Q36 14 40 18 Q46 18 46 24 Q46 30 40 30 Z" stroke="#aaa" stroke-width="1.5" fill="none"/>
-  </svg>
-  <svg class="doodle-cloud" style="top:3%;right:16%;width:48px;" viewBox="0 0 80 40" fill="none">
-    <path d="M15 30 Q10 30 10 24 Q10 18 16 18 Q16 10 24 10 Q30 10 32 16 Q36 14 40 18 Q46 18 46 24 Q46 30 40 30 Z" stroke="#bbb" stroke-width="1.5" fill="none"/>
-  </svg>
-  <!-- Paper plane (left) -->
-  <svg style="position:absolute;top:12%;left:7%;width:48px;opacity:0.5;" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 38 L58 5 L32 35 Z" stroke="#555" stroke-width="1.5" fill="none"/>
-    <path d="M32 35 L28 22 L58 5 Z" stroke="#555" stroke-width="1.5" fill="none"/>
-    <!-- dashed trail -->
-    <path d="M2 38 Q-4 20 8 10" stroke="#888" stroke-width="1" stroke-dasharray="3,4" fill="none"/>
-  </svg>
-
-  <!-- Globe illustration image -->
   <div class="globe-wrap">
     <!-- Search bar overlaid on globe -->
     <!-- <div class="search-overlay">
@@ -421,9 +378,6 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════ -->
-<!--  STICKY FILTERS / CATEGORY BAR        -->
-<!-- ═══════════════════════════════════════ -->
 <div class="filters-section">
   <div id="filters">
     <div class="filter" data-category="trending">
@@ -528,9 +482,6 @@
           alt="<%= info.title %>"
           loading="lazy"
         />
-        <button class="heart-btn" onclick="event.preventDefault(); toggleWishlist(this)">
-          <i class="fa-regular fa-heart"></i>
-        </button>
         <div class="card-body">
           <div class="listing-title"><%= info.title %></div>
           <% if(info.location || info.country) { %>
@@ -544,13 +495,13 @@
             &nbsp;/ night
             <i class="tax-info">&nbsp;+18% GST</i>
           </p>
-          <% if(info.rating || info.reviews) { %>
+          <!-- <% if(info.rating || info.reviews) { %>
           <div class="listing-rating">
             <i class="fa-solid fa-star"></i>
             <%= info.rating || "4.8" %>
             <% if(info.reviews) { %><span style="color:#aaa;font-weight:400;">(<%= info.reviews %>)</span><% } %>
           </div>
-          <% } %>
+          <% } %> -->
         </div>
       </div>
     </a>
@@ -606,16 +557,4 @@
 //   document.getElementById("heroSearch").addEventListener("keydown", e => {
 //     if (e.key === "Enter") handleHeroSearch();
 //   });
-
-  /* ── Wishlist heart toggle (UI only) ── */
-  function toggleWishlist(btn) {
-    const icon = btn.querySelector("i");
-    if (icon.classList.contains("fa-regular")) {
-      icon.classList.replace("fa-regular", "fa-solid");
-      icon.style.color = "#e74c3c";
-    } else {
-      icon.classList.replace("fa-solid", "fa-regular");
-      icon.style.color = "";
-    }
-  }
 </script>
