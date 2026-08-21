@@ -54,7 +54,7 @@
   /* Search bar overlaid on globe */
   .search-overlay {
     position: absolute;
-    bottom: 18%;
+    bottom: 12%;
     left: 50%;
     transform: translateX(-50%);
     width: 60%;
@@ -366,7 +366,7 @@
 
   <div class="globe-wrap">
     <!-- Search bar overlaid on globe -->
-    <!-- <div class="search-overlay">
+    <div class="search-overlay">
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass" style="color:#aaa;margin-right:8px;"></i>
         <input type="text" placeholder="Search destinations, places…" id="heroSearch"/>
@@ -374,7 +374,7 @@
           <i class="fa-solid fa-sliders"></i>
         </button>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>
 
@@ -550,11 +550,11 @@
   });
 
   /* ── Hero search ── */
-//   function handleHeroSearch() {
-//     const q = document.getElementById("heroSearch").value.trim();
-//     if (q) window.location.href = `/listings?search=${encodeURIComponent(q)}`;
-//   }
-//   document.getElementById("heroSearch").addEventListener("keydown", e => {
-//     if (e.key === "Enter") handleHeroSearch();
-//   });
+   function handleHeroSearch() {
+     const q = document.getElementById("heroSearch").value.trim();
+     if (q) window.location.href = `/listings?search=${encodeURIComponent(q)}`;
+   }
+   document.getElementById("heroSearch").addEventListener("keydown", e => {
+     if (e.key === "Enter") handleHeroSearch();
+   });
 </script>
