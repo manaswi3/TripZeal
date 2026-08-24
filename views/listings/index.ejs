@@ -21,18 +21,6 @@
     padding-top: 0.5rem;
   }
 
-  /* Doodle floating elements */
-  .doodle-star {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    opacity: 0.55;
-  }
-  .doodle-cloud {
-    position: absolute;
-    opacity: 0.45;
-  }
-
   /* Globe image container */
   .globe-wrap {
   background-image: url('/assets/tripzeal_banner.png');
@@ -43,13 +31,30 @@
   width: 90%;          
   margin: 0 auto;      
   display: block;
-  border-radius: 16px; 
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden; 
 }
   .globe-wrap img.globe-img {
     width: 100%;
     display: block;
     object-fit: contain;
   }
+
+  .globe-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;       /* ← fade height */
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #FDFAF3            /* ← matches your page bg */
+  );
+  pointer-events: none;
+}
 
   /* Search bar overlaid on globe */
   .search-overlay {
@@ -98,11 +103,17 @@
   .filters-section {
     background: #fff;
     border-bottom: 1px solid #eee;
+    border-radius: 1.5rem;
     padding: 0.6rem 1.5rem;
-    /* position: sticky; */
+    width: 70%;
+    max-width: 1200px;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.8rem auto;
   }
   #filters {
     display: flex;
@@ -111,6 +122,8 @@
     gap: 0;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    flex: 1;
+    min-width: 0;
   }
   #filters::-webkit-scrollbar { display: none; }
 
@@ -118,8 +131,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 68px;
-    padding: 0.5rem 0.6rem;
+    min-width: 58px;
+    padding: 0.4rem 0.5rem;
     opacity: 0.6;
     cursor: pointer;
     transition: opacity 0.2s;
@@ -149,37 +162,64 @@
   }
 
   /* Tax toggle */
-  .tax-toggle {
-    display: flex;
-    align-items: center;
-    border: 1.5px solid #ccc;
-    border-radius: 2rem;
-    height: 2.8rem;
-    margin-left: auto;
-    padding: 0.4rem 1rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-    background: #fff;
-  }
-  .tax-toggle label {
-    font-size: 0.78rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    color: #333;
-    cursor: pointer;
-  }
-  .form-check-input:checked {
-    background-color: #FFB800;
-    border-color: #FFB800;
-  }
+.tax-toggle {
+  flex-shrink: 0;
+  min-width: max-content;
+  border: 1.5px solid #ddd;
+  border-radius: 0.75rem;
+  height: 2.4rem;
+  padding: 0 1rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.tax-toggle:hover { border-color: #FFB800; }
+
+.toggle-switch {
+  width: 32px;
+  height: 18px;
+  background: #ddd;
+  border-radius: 50px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: #fff;
+  border-radius: 50%;
+  top: 2.5px;
+  left: 3px;
+  transition: left 0.2s;
+}
+.toggle-switch.active {
+  background: #FFB800;
+}
+.toggle-switch.active::after {
+  left: 16px;
+}
+
+.toggle-label {
+  font-size: 0.75rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
 
   /* ── Section Header ── */
   .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 1.2rem;
     padding: 0 0.2rem;
+    width: 100%;
   }
   .section-title {
     font-family: 'Poppins', sans-serif;
@@ -194,16 +234,6 @@
     width: 28px;
     vertical-align: middle;
   }
-  .view-all-link {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #FFB800;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-  .view-all-link:hover { color: #e6a500; }
 
   /* ── Listing Cards ── */
   .listings-grid {
@@ -234,7 +264,6 @@
     transition: transform 0.25s, box-shadow 0.25s;
     padding: 1rem;
     position: relative;
-    /* width: 100% !important; */
     width: 25vw !important;
   }
   .card-listing:hover {
@@ -335,6 +364,10 @@
     padding: 2rem 1.5rem 2.5rem;
     max-width: 1200px;
     margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
   }
 
   .empty-state {
@@ -445,14 +478,13 @@
       <p>Caves</p>
     </div>
 
-    <!-- Tax toggle -->
-    <div class="tax-toggle">
-      <div class="form-check-reverse form-switch d-flex align-items-center gap-2">
-        <input class="form-check-input mt-0" type="checkbox" role="switch" id="switchCheckDefault">
-        <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
-      </div>
-    </div>
+    
   </div>
+  <!-- Tax toggle -->
+    <div class="tax-toggle" onclick="toggleTax()" id="taxToggle">
+      <div class="toggle-switch" id="toggleSwitch"></div>
+      <span class="toggle-label">Display total after taxes</span>
+    </div>
 </div>
 
 
@@ -466,9 +498,6 @@
         <path d="M2 10 Q8 4 14 10 Q20 16 26 10 Q32 4 38 10" stroke="#FFB800" stroke-width="2.2" stroke-linecap="round" fill="none"/>
       </svg>
     </div>
-    <a href="/listings" class="view-all-link">
-      View all <i class="fa-solid fa-arrow-right" style="font-size:0.75rem;"></i>
-    </a>
   </div>
 
   <% if(allListings && allListings.length > 0) { %>
@@ -525,8 +554,9 @@
 
 <script>
   /* ── Tax toggle ── */
-  const taxSwitch = document.getElementById("switchCheckDefault");
+  const taxSwitch = document.getElementById("toggleSwitch");
   taxSwitch.addEventListener("click", () => {
+    taxSwitch.classList.toggle('active');
     document.querySelectorAll(".tax-info").forEach(el => {
       el.style.display = el.style.display !== "inline" ? "inline" : "none";
     });
