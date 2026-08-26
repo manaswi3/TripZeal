@@ -192,7 +192,7 @@
   .login-text a { color: #FFB800; font-weight: 600; text-decoration: none; }
   .login-text a:hover { text-decoration: underline; }
 
-  
+  /* ── Responsive ── */
   @media (max-width: 768px) {
     .signup-page { grid-template-columns: 1fr; }
     .left-col { display: none; }
@@ -283,6 +283,7 @@
   (() => {
     'use strict';
     const form = document.getElementById('signupForm');
+
     function validateField(input) {
       const wrap = input.closest('.input-wrap');
       wrap.setAttribute('data-touched', 'true');
