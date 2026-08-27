@@ -214,6 +214,65 @@
   white-space: nowrap;
 }
 
+/* ── Filters responsive ── */
+@media (max-width: 1024px) {
+  .filters-section {
+    width: 85%;
+  }
+}
+
+@media (max-width: 768px) {
+  .filters-section {
+    width: 92%;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+    border-radius: 1rem;
+    flex-wrap: nowrap;
+  }
+
+  .filter {
+    min-width: 50px;
+    padding: 0.3rem 0.4rem;
+  }
+  .filter i { font-size: 1rem; }
+  .filter p { font-size: 0.62rem; }
+
+  .tax-toggle {
+    padding: 0 0.7rem;
+    height: 2.1rem;
+  }
+  .toggle-label { font-size: 0.68rem; }
+  .toggle-switch { width: 26px; height: 15px; }
+  .toggle-switch::after { width: 10px; height: 10px; top: 2px; left: 2px; }
+  .toggle-switch.active::after { left: 13px; }
+}
+
+@media (max-width: 540px) {
+  .filters-section {
+    width: 95%;
+    flex-direction: column;    /* ← stack on small screens */
+    padding: 0.6rem 0.8rem;
+    gap: 0.4rem;
+  }
+
+  #filters {
+    width: 100%;
+  }
+
+  .tax-toggle {
+    width: 100%;
+    justify-content: center;
+    border-radius: 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .filter { min-width: 44px; }
+  .filter i { font-size: 0.9rem; }
+  .filter p { font-size: 0.58rem; }
+  .toggle-label { font-size: 0.65rem; }
+}
+
 
   /* ── Section Header ── */
   .section-header {
@@ -589,4 +648,9 @@
    document.getElementById("heroSearch").addEventListener("keydown", e => {
      if (e.key === "Enter") handleHeroSearch();
    });
+   const searchQuery = new URLSearchParams(window.location.search).get("search");
+   if (searchQuery) {
+    document.getElementById("heroSearch").value = searchQuery;
+   }
+   
 </script>
