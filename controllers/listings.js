@@ -2,11 +2,24 @@ const Listing = require("../models/listing");
 const geocode = require("../utils/geocode");
 
 module.exports.index = async(req,res)=>{
-    const {category} = req.query;
-    const cat=category;
-    console.log("cat:", cat);
-    const allListings = cat? await Listing.find({category:cat}):await Listing.find();
-    res.render("listings/index.ejs",{allListings})
+    const { category, search } = req.query;
+
+  let filter = {};
+
+  if (category) {
+    filter.category = category;
+  }
+
+  if (search) {
+    filter.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { location: { $regex: search, $options: "i" } },
+      { country: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } }
+    ];
+  }
+  const allListings = await Listing.find(filter);
+  res.render("listings/index.ejs", { allListings });
 }
 
 module.exports.renderNewForm = (req,res)=>{
