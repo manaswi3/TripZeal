@@ -1,0 +1,131 @@
+  body { background: #FDFAF3; font-family: 'Poppins', sans-serif; }
+
+  .edit-page {
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 5rem;
+    max-width: 1100px;
+  }
+
+  .edit-heading h2 {
+    font-family: 'Caveat', cursive;
+    font-size: 2.4rem; 
+    font-weight: 700; 
+    color: #1a1a1a;
+    margin: 0 0 0.2rem;
+    display: flex; 
+    align-items: center; 
+    gap: 0.3rem;
+  }
+  .edit-heading p { font-size: 0.88rem; color: #777; margin: 0 0 2rem; }
+
+
+  .form-col {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem 2rem 2.5rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+
+  .form-col::before { top: -10px; left: 32px;  transform: rotate(-2.5deg); }
+  .form-col::after  { top: -10px; right: 32px; transform: rotate(2.5deg); }
+
+  .form-section-title {
+    font-size: 1.05rem; font-weight: 700; color: #1a1a1a;
+    margin-bottom: 1.2rem; padding-bottom: 0.6rem;
+    border-bottom: 2px solid #f0ebe0;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .form-section-title i { color: #FFB800; }
+
+  .form-label { font-size: 0.82rem; font-weight: 600; color: #444; margin-bottom: 0.4rem; }
+
+  .form-control {
+    border: 1.5px solid #e5e0d8 !important;
+    border-radius: 10px !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 0.88rem !important;
+    color: #1a1a1a !important;
+    background: #FDFAF3 !important;
+    padding: 0.65rem 1rem !important;
+  }
+  .form-control:focus {
+    border-color: #FFB800 !important;
+    box-shadow: 0 0 0 3px rgba(255,184,0,0.15) !important;
+    background: #fff !important;
+  }
+  .form-control::placeholder { color: #bbb !important; }
+
+  .input-group-text {
+    background: #f5f0e8 !important;
+    border: 1.5px solid #e5e0d8 !important;
+    border-right: none !important;
+    border-radius: 10px 0 0 10px !important;
+    font-weight: 600; color: #888;
+  }
+  .input-group .form-control {
+    border-left: none !important;
+    border-radius: 0 10px 10px 0 !important;
+  }
+  .input-group:focus-within .input-group-text { border-color: #FFB800 !important; }
+
+  .image-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.3rem;
+  }
+  @media (max-width: 560px) { .image-row { grid-template-columns: 1fr; } }
+
+  .current-img-label {
+    font-size: 0.82rem; font-weight: 600; color: #444;
+    margin-bottom: 0.5rem; display: block;
+  }
+  .current-img-wrap img {
+    width: 100%; height: 170px;
+    object-fit: cover; border-radius: 10px;
+    border: 1.5px solid #e5e0d8; display: block;
+    transition: opacity 0.3s;
+  }
+
+  .upload-zone {
+    border: 2px dashed #d0c8b8;
+    border-radius: 14px;
+    padding: 1.8rem 1rem;
+    text-align: center;
+    background: #FDFAF3;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    height: 170px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.3rem;
+  }
+  .upload-zone:hover { border-color: #FFB800; background: rgba(255,184,0,0.05); }
+  .upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0;
+    cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-zone .upload-icon { font-size: 2rem; color: #ccc; margin-bottom: 0.3rem; }
+  .upload-zone p { font-size: 0.8rem; color: #aaa; margin: 0; }
+  .upload-zone p b { color: #FFB800; }
+
+  #uploadPreview {
+    display: none; margin-top: 0.6rem;
+    border-radius: 10px; overflow: hidden; max-height: 130px;
+  }
+  #uploadPreview img { width: 100%; object-fit: cover; max-height: 130px; }
+
+  .btn-save {
+    background: #FFB800; border: none; color: #1a1a1a;
+    font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem;
+    padding: 0.65rem 2.2rem; border-radius: 50px; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 14px rgba(255,184,0,0.3);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-save:hover { background: #e6a500; transform: translateY(-1px); }
+  .btn-save-wrap { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; }

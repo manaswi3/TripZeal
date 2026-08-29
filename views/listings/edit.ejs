@@ -1,56 +1,144 @@
 <% layout("/layouts/boilerplate") -%>
 
-    <div class="row mt-3">
-            <div class="col-8 offset-2">
-                <h3>Edit your Listing</h3>
-    <form method="post" action="/listings/<%=data._id%>?_method=PUT" class="needs-validation" enctype="multipart/form-data" novalidate>
-        
-        <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input value="<%=data.title%>" name="listing[title]" type="text" class="form-control" required>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/listings/edit.css">
+
+<div class="edit-page">
+  <!-- Heading -->
+  <div class="edit-heading">
+    <h2>
+      Edit your Listing
+      <svg width="32" viewBox="0 0 36 22" fill="none" style="vertical-align:middle;">
+        <path d="M2 11 Q7 4 13 11 Q19 18 25 11 Q31 4 34 11" stroke="#FFB800" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      </svg>
+    </h2>
+    <p>Make changes to keep your listing up to date</p>
+  </div>
+
+  <!-- ── Form card ── -->
+  <div class="form-col">
+    <form method="post" action="/listings/<%= data._id %>?_method=PUT"
+          class="needs-validation" enctype="multipart/form-data" novalidate id="editForm">
+
+      <div class="form-section-title">
+        <i class="fa-solid fa-pen-nib"></i> Basic Information
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input value="<%= data.title %>" name="listing[title]" type="text"
+               class="form-control" placeholder="Add a catchy title" required>
         <div class="valid-feedback">Title looks good!</div>
+        <div class="invalid-feedback">Please add a title.</div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label">Description</label>
+        <textarea name="listing[description]" class="form-control" rows="4"
+                  placeholder="Describe your place… what makes it special?" required><%= data.description %></textarea>
+        <div class="invalid-feedback">Please enter a short description.</div>
+      </div>
+
+      <!-- Images -->
+      <div class="form-section-title mt-2">
+        <i class="fa-solid fa-images"></i> Listing Image
+      </div>
+
+      <div class="image-row mb-4">
+        <!-- Current image -->
+        <div class="current-img-wrap">
+          <span class="current-img-label">Current Listing Image</span>
+          <img src="<%= originalImageUrl %>" alt="Current image" id="currentImg">
         </div>
-
-        <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea name="listing[description]" type="text" class="form-control" required><%=data.description%></textarea>
-        <div class="invalid-feedback">Please enter a short description</div>
+        <!-- Upload new -->
+        <div>
+          <span class="current-img-label">Upload New Image</span>
+          <div class="upload-zone" id="uploadZone">
+            <input name="listing[image]" type="file" id="imgInput" accept="image/*">
+            <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <p><b>Click to upload</b> or drag &amp; drop</p>
+            <p style="font-size:0.7rem;color:#ccc;margin-top:0.2rem;">PNG, JPG up to 10MB</p>
+          </div>
+          <div id="uploadPreview">
+            <img id="previewImg" src="" alt="Preview">
+          </div>
         </div>
+      </div>
 
-        <div class="mb-3">
-            <label>Current Listing Image</label><br/>
-            <img src="<%=originalImageUrl%>"/>
+      <!-- Pricing -->
+      <div class="form-section-title mt-2">
+        <i class="fa-solid fa-indian-rupee-sign"></i> Pricing &amp; Details
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label class="form-label">Price per night</label>
+          <div class="input-group">
+            <span class="input-group-text">₹</span>
+            <input value="<%= data.price %>" name="listing[price]" type="number"
+                   min="0" class="form-control" placeholder="Enter price" required>
+          </div>
+          <div class="invalid-feedback">Price should be valid.</div>
         </div>
-
-        <div class="mb-3">
-        <label for="image" class="form-label">Upload New Image</label>
-        <input name="listing[image]" type="file" class="form-control">
+        <div class="mb-3 col-md-8">
+          <label class="form-label">Country</label>
+          <input value="<%= data.country %>" name="listing[country]" type="text"
+                 class="form-control" placeholder="Enter country" required>
+          <div class="invalid-feedback">Country name should be valid.</div>
         </div>
+      </div>
 
-        <div class="row">
-        
-            <div class="mb-3 col-md-4">
-            <label for="price" class="form-label">Price</label>
-            <input value="<%=data.price%>" name="listing[price]" type="number" class="form-control" required>
-            <div class="invalid-feedback">Price should be valid</div>
-            </div>
+      <!-- Location -->
+      <div class="form-section-title mt-2">
+        <i class="fa-solid fa-location-dot"></i> Location
+      </div>
 
-            <div class="mb-3 col-md-8">
-            <label for="country" class="form-label">Country</label>
-            <input value="<%=data.country%>" name="listing[country]" type="text" class="form-control" required>
-             <div class="invalid-feedback">Country Name should be valid</div>
-            </div>
+      <div class="mb-4">
+        <label class="form-label">Exact Location</label>
+        <input value="<%= data.location %>" name="listing[location]" type="text"
+               class="form-control" placeholder="City, neighbourhood, or address" required>
+        <div class="invalid-feedback">Location should be valid.</div>
+      </div>
 
-        </div>
+      <!-- Save -->
+      <div class="btn-save-wrap">
+        <button type="submit" class="btn-save">
+          <i class="fa-solid fa-paper-plane"></i> Save Changes
+        </button>
+      </div>
 
-        <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input value="<%=data.location%>" name="listing[location]" type="text" class="form-control" required>
-        <div class="invalid-feedback">Location should be valid</div>
-        </div>
-        <button class="btn btn-dark add-btn mt-3">Save Changes</button>
-        <br><br>
     </form>
-</div>
+  </div>
+
 </div>
 
+<script>
+  (() => {
+    'use strict';
+    document.getElementById('editForm').addEventListener('submit', e => {
+      if (!e.target.checkValidity()) { e.preventDefault(); e.stopPropagation(); }
+      e.target.classList.add('was-validated');
+    }, false);
+  })();
+
+  document.getElementById('imgInput').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('previewImg').src = e.target.result;
+      document.getElementById('uploadPreview').style.display = 'block';
+      document.getElementById('currentImg').style.opacity = '0.4';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor = '#FFB800'; });
+  zone.addEventListener('dragleave', () => { zone.style.borderColor = ''; });
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.style.borderColor = '';
+    document.getElementById('imgInput').files = e.dataTransfer.files;
+    document.getElementById('imgInput').dispatchEvent(new Event('change'));
+  });
+</script>
