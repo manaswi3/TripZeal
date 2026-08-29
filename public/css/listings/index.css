@@ -374,28 +374,6 @@
 
   .tax-info { display: none; }
 
-  /* ── Load more ── */
-  .load-more-wrap {
-    text-align: center;
-    margin: 2.5rem 0 1rem;
-  }
-  .btn-load-more {
-    background: transparent;
-    border: 2px solid #FFB800;
-    color: #1a1a1a;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 0.88rem;
-    padding: 0.6rem 2rem;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-  }
-  .btn-load-more:hover {
-    background: #FFB800;
-    color: #fff;
-  }
-
   .listings-wrapper {
     position: relative;
     padding: 2rem 3rem 2.5rem;

@@ -6,9 +6,7 @@
 <link rel="stylesheet" href="/css/listings/index.css"/>
 
 <div class="hero-section">
-
   <div class="globe-wrap">
-    <!-- Search bar overlaid on globe -->
     <div class="search-overlay">
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass" style="color:#aaa;margin-right:8px;"></i>
@@ -90,7 +88,6 @@
 
     
   </div>
-  <!-- Tax toggle -->
     <div class="tax-toggle" onclick="toggleTax()" id="taxToggle">
       <div class="toggle-switch" id="toggleSwitch"></div>
       <span class="toggle-label">Display total after taxes</span>
@@ -103,7 +100,6 @@
   <div class="section-header">
     <div class="section-title">
       Top stays for you
-      <!-- hand-drawn squiggle arrow -->
       <svg class="squiggle" viewBox="0 0 40 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M2 10 Q8 4 14 10 Q20 16 26 10 Q32 4 38 10" stroke="#FFB800" stroke-width="2.2" stroke-linecap="round" fill="none"/>
       </svg>
@@ -134,23 +130,10 @@
             &nbsp;/ night
             <i class="tax-info">&nbsp;+18% GST</i>
           </p>
-          <!-- <% if(info.rating || info.reviews) { %>
-          <div class="listing-rating">
-            <i class="fa-solid fa-star"></i>
-            <%= info.rating || "4.8" %>
-            <% if(info.reviews) { %><span style="color:#aaa;font-weight:400;">(<%= info.reviews %>)</span><% } %>
-          </div>
-          <% } %> -->
         </div>
       </div>
     </a>
     <% } %>
-  </div>
-
-  <div class="load-more-wrap">
-    <button class="btn-load-more">
-      Load more &nbsp;<i class="fa-solid fa-chevron-down" style="font-size:0.75rem;"></i>
-    </button>
   </div>
 
   <% } else { %>
@@ -163,7 +146,7 @@
 </div>
 
 <script>
-  /* ── Tax toggle ── */
+
   const taxSwitch = document.getElementById("toggleSwitch");
   taxSwitch.addEventListener("click", () => {
     taxSwitch.classList.toggle('active');
@@ -172,7 +155,6 @@
     });
   });
 
-  /* ── Category filters ── */
   const filters = document.querySelectorAll(".filter");
   const urlParams = new URLSearchParams(window.location.search);
   const activeCategory = urlParams.get("category");
@@ -189,7 +171,6 @@
     });
   });
 
-  /* ── Hero search ── */
    function handleHeroSearch() {
      const q = document.getElementById("heroSearch").value.trim();
      if (q) window.location.href = `/listings?search=${encodeURIComponent(q)}`;
