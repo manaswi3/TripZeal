@@ -16,13 +16,28 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js")
 
 const session = require("express-session");
+const {MongoStore} = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
+
+const store = MongoStore.create({
+    mongoUrl: MongoDB_url,
+    crypto:{
+        secret: process.env.SESSION_SECRET_KEY
+    },
+    touchAfter: 24*3600,
+});
+
+store.on("error",(err)=>{
+    console.log("Error in Mongo Session Store",err);
+});
+
 const sessionOptions = {
-    secret:`${process.env.SESSION_SECRET_KEY}`,
+    store,
+    secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized:true,
     cookie:{
@@ -31,6 +46,7 @@ const sessionOptions = {
         httpOnly: true,
     },
 };
+
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -55,16 +71,6 @@ app.use((req,res,next)=>{
     next();
 })
 
-// app.get("/demouser",async (req,res)=>{
-//     let fakeUser =new User({
-//         email:"demo@gmail.com",
-//         username: "student_demo",
-//     });
-
-//     let userDemo = await User.register(fakeUser,"helloworld");
-//     res.send(userDemo);
-// });
-
 main().then(()=>{
     console.log("connect to DB");
 }).catch(err=>console.log(err));
@@ -73,9 +79,6 @@ async function main(){
     await mongoose.connect(MongoDB_url);
 }
 
-// app.get("/",(req,res)=>{
-//     res.send("Hey, I am root")
-// })
 
 //All Listings Route----->>
 app.use("/listings",listingRouter);
