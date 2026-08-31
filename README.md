@@ -5,9 +5,6 @@
 **A full-stack travel accommodation platform for discovering, creating, and managing destination listings.**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-tripzeal.onrender.com-FFB800?style=for-the-badge&logo=render&logoColor=white)](https://tripzeal.onrender.com/listings)
-<!-- [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://mongodb.com)
-[![Express](https://img.shields.io/badge/Express.js-4.x-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com) -->
 
 </div>
 
@@ -15,17 +12,31 @@
 
 ## Overview
 
-TripZeal is a full-stack travel accommodation platform built with **Node.js, Express.js, MongoDB, and EJS**. Users can explore destination listings, search and filter accommodations, create and manage their own listings, upload images, and interact through reviews.
+TripZeal is a full-stack travel accommodation platform built with **Node.js, Express.js, MongoDB, and EJS**. Users can discover accommodations, search and filter listings, create and manage their own properties, upload images, view locations on interactive maps, and interact through reviews.
 
 The application follows **MVC architecture** and implements authentication, authorization, server-side validation, persistent sessions, cloud-based image storage, and location-based mapping.
 
 ---
 
-## Features
+## ✨ Highlights
+
+- Full CRUD-based accommodation management
+- Session-based authentication and ownership authorization
+- Search and category-based filtering
+- Cloudinary-powered image uploads
+- Location geocoding and interactive maps
+- Server-side validation with Joi
+- MongoDB-backed session persistence
+- Production deployment with Render and MongoDB Atlas
+
+---
+
+## 🛠️ Features
 
 **Authentication & Authorization**
-- User registration and login via Passport.js
-- Protected routes — only listing/review owners can edit or delete
+- User registration and login using Passport.js
+- Session-based authentication with protected routes
+- Role/ownership-based authorization for listing and review modifications
 
 **Listing Management**
 - Full CRUD — create, view, edit, delete listings
@@ -45,10 +56,10 @@ The application follows **MVC architecture** and implements authentication, auth
 
 **Location & Maps**
 - Geocode listing locations to coordinates
-- Display on interactive OpenStreet map on every listing
+- Display listings on interactive maps using MapLibre GL JS and OpenStreetMap data
 
 **Validation & Error Handling**
-- Joi server-side validation + Bootstrap client-side
+- Joi server-side validation + client-side form validation
 - Custom error handling with flash messages
 
 **Sessions**
@@ -56,7 +67,7 @@ The application follows **MVC architecture** and implements authentication, auth
 
 ---
 
-## 🛠️ Tech Stack
+## 💻 Tech Stack
 
 | Category | Technologies |
 |---|---|
@@ -64,15 +75,15 @@ The application follows **MVC architecture** and implements authentication, auth
 | Backend | Node.js, Express.js |
 | Database | MongoDB, Mongoose |
 | Authentication | Passport.js, Express Session |
-| Validation | Joi |
+| Validation | Joi, Client-side validation |
 | Image Storage | Cloudinary, Multer |
-| Maps | OpenStreet GL JS |
+| Maps | MapLibre GL JS, OpenStreetMap Nominatim |
 | Architecture | MVC |
 | Deployment | Render + MongoDB Atlas |
 
 ---
 
-## Application Architecture
+## 🧩 Application Architecture
 ```mermaid
 flowchart TD
     A[User] --> B[EJS + Bootstrap UI]
@@ -94,7 +105,7 @@ flowchart TD
 ```
 ---
 
-##  Request Flow
+## 🔄 Request Flow
 
 ```mermaid 
 flowchart LR
@@ -107,29 +118,14 @@ flowchart LR
     D --> G[EJS View]
     G --> H[Response]
 ```
+---
 
-<!-- --- -->
-
-<!-- ## 📸 Screenshots
-
-### 🏠 Homepage -->
-<!-- ![Homepage](screenshots/home.png) -->
-
-<!-- ### 🔎 Explore & Search -->
-<!-- ![Explore](screenshots/explore.png) -->
-
-<!-- ### 🏡 Listing Details -->
-<!-- ![Listing](screenshots/show.png) -->
-
-<!-- ### 🗺️ Location & Map -->
-<!-- ![Map](screenshots/map.png) -->
-
-<!-- ### ➕ Create Listing -->
-<!-- ![Create Listing](screenshots/new.png) -->
+## 🎨 UI Showcase
+![TripZeal UI Preview](./public/assets/Tripzeal_UI.png)
 
 ---
 
-##  Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js v18+
@@ -195,17 +191,17 @@ TripZeal/
 
 ---
 
-##  Security
+## 🔏 Security
 
 - Environment variables for all secrets and credentials
 - Authentication and authorization on all protected routes
 - Server-side Joi validation on all form submissions
 - Ownership checks before any listing or review modification
-- Sessions stored securely in MongoDB
+- Sessions persisted in MongoDB using Connect-Mongo
 
 ---
 
-##  Deployment
+## 🌐 Deployment
 
 | | |
 |---|---|
@@ -216,15 +212,15 @@ TripZeal/
 
 ---
 
-##  What I Learned
+## 📖 What I Learned
 
 Through TripZeal, I gained practical experience building and deploying a full-stack MVC application — designing RESTful routes, implementing authentication and authorization, integrating third-party services (Cloudinary, OpenStreet Nominatim API), handling cloud image storage, working with geospatial data, and managing production environment variables and deployment.
 
 ---
 
-##  Future Improvements
+## 💡 Future Improvements
 
-- Booking and reservation functionality
+- Booking and reservation system with date availability
 - Advanced sorting and price range filters
 - Map-based listing discovery
 - User profiles and saved/wishlisted listings
@@ -232,8 +228,8 @@ Through TripZeal, I gained practical experience building and deploying a full-st
 
 ---
 
-## 👩‍💻 Author
+## 👩🏻‍💻 Author
 
 **Manaswi Saxena**
 
-[![GitHub](https://img.shields.io/badge/GitHub-manaswi3-181717?style=flat-square&logo=github)](https://github.com/manaswi3)
+[GitHub](https://github.com/manaswi3) · [LinkedIn](https://www.linkedin.com/in/manaswisaxena-3m)
