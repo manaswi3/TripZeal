@@ -79,6 +79,20 @@ async function main(){
     await mongoose.connect(MongoDB_url);
 }
 
+// SEED ROUTE
+const Listing = require("./models/listing.js");
+const { data: initData } = require("./init/data.js");
+
+app.get("/seed-abhi-abc987", async (req, res) => {
+  try {
+    await Listing.deleteMany({});
+    await Listing.insertMany(initData);
+    res.send(" Done! " + initData.length + " listings added. NOW REMOVE THIS ROUTE.");
+  } catch (err) {
+    res.status(500).send(" Error: " + err.message);
+  }
+});
+
 
 //All Listings Route----->>
 app.use("/listings",listingRouter);
