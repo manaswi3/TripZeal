@@ -79,6 +79,15 @@ async function main(){
     await mongoose.connect(MongoDB_url);
 }
 
+app.get("/fix-owner", async (req, res) => {
+  try {
+    await Listing.updateMany({}, { $set: { owner: new mongoose.Types.ObjectId("6a934065654f380f0456e965") } });
+    res.send(" All 57 listings owner updated!");
+  } catch (err) {
+    res.status(500).send(" Error: " + err.message);
+  }
+});
+
 //All Listings Route----->>
 app.use("/listings",listingRouter);
 
